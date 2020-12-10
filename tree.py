@@ -107,46 +107,18 @@ class Tree():
         if self.left == None :
             self.left = node;
             self.left_len += 1;
-            print("left add node = %d,cnt=%d" %(node.data,1<<height));
+            print("%d's left add node = %d,cnt=%d,left_len=%d" %(self.data,node.data,(1<<height)-1,self.left_len));
             return ;
         
         #左子树满了，才开始添加又子树
-        if self.left_len >= (1<<height -1) and self.right == None:
+        if self.left_len >= ((1<<height) -1) and self.right == None:
             self.right = node;
             self.right_len += 1;
-            print("right add node = %d,cnt=%d" %(node.data,1<<height));
+            print("%d's right add node = %d,cnt=%d,left_len=%d" %(self.data,node.data,(1<<height)-1,self.left_len));
             return ;
             
         #左子树还没有满，添加到左子树
-        if self.left_len < (1<<height-1):
-            self.left.xianxu_add(node,height-1);
-            self.left_len += 1;
-        #左子树满了，添加到右子树
-        else :
-            self.right.xianxu_add(node,height-1);
-            self.right_len += 1;
-
-    def zhongxu_add(self,node,height):
-        #如果已经是最下层了，就不要加了
-        if height == 0:
-            return;
-        
-        #左子树没有满，并且左孩子是空的时候添加
-        if self.left == None :
-            self.left = node;
-            self.left_len += 1;
-            print("left add node = %d,cnt=%d" %(node.data,1<<height));
-            return ;
-        
-        #左子树满了，才开始添加又子树
-        if self.left_len >= (1<<height -1) and self.right == None:
-            self.right = node;
-            self.right_len += 1;
-            print("right add node = %d,cnt=%d" %(node.data,1<<height));
-            return ;
-            
-        #左子树还没有满，添加到左子树
-        if self.left_len < (1<<height-1):
+        if self.left_len < ((1<<height)-1):
             self.left.xianxu_add(node,height-1);
             self.left_len += 1;
         #左子树满了，添加到右子树
@@ -167,6 +139,21 @@ class Tree():
             self.right.tree_travel();
         #后续遍历
         #print(self.data);
+    
+    def zhognxu_travel(self):
+        if self.left is not None:
+            self.left.zhognxu_travel();
+        #中序遍历
+        print(self.data);
+        if self.right is not None:
+            self.right.zhognxu_travel();
+        
+    def houxu_travel(self):
+        if self.left is not None:
+            self.left.houxu_travel();        
+        if self.right is not None:
+            self.right.houxu_travel();
+        print(self.data);    
         
     def exchange_tree(self):
         if self.left == None and self.right == None:
@@ -209,14 +196,69 @@ class Tree():
         print(self.data);
         if self.right != None:
             self.right.travel_lazhi();
-     
-arr_list = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+    
+    def create_tree(self,xianxu_list,index,zhongxu_list,list_len):
+        if index >= len(xianxu_list) or list_len == 0:
+            return;
+        zhongxu_left_list = [];
+        zhongxu_right_list = [];
+        data = xianxu_list[index];
+        data_index = zhongxu_list.index(data);
+        zhongxu_left_list = zhongxu_list[:data_index];
+        zhongxu_right_list = zhongxu_list[data_index+1:];
+        if len(zhongxu_left_list) == 0:
+            self.left = None;
+            print("left is none");
+            return;
+        else:
+            self.left = Tree(xianxu_list[index+1]);
+            print("left add %d" %(xianxu_list[index+1]));
+            
+        if len(zhongxu_right_list) == 0:
+            self.right = None;
+            print("right is none");         
+            return;
+        else:
+            for i in xianxu_list:
+                if i in zhongxu_right_list:
+                    break;
+            self.right = Tree(i);
+            print("right add %d" %(self.right.data));
+
+        self.data = data;
+        right_index = xianxu_list.index(self.right.data);
+        self.left.create_tree(xianxu_list,index+1,zhongxu_left_list,len(zhongxu_left_list));
+        self.right.create_tree(xianxu_list,right_index,zhongxu_right_list,len(zhongxu_right_list));
+        pass
+        
+
+def constuct_tree(xianxu_list,zhongxu_list):
+    if len(xianxu_list) == 0 or len(zhongxu_list) == 0:
+        return None;
+    #先把中序列表分开
+    tree = Tree(xianxu_list[0]);
+    list_len = len(xianxu_list);
+    tree.create_tree(xianxu_list,0,zhongxu_list,list_len);
+    return tree;
+    
+arr_list = [1,2,3,4,5,6];
 tree = Tree(0);
 for member in arr_list:
     node = Tree(member);
-    tree.xianxu_add(node,4);
+    #tree.xianxu_add(node,2);
+    
 
+
+
+xianxu_list = [0,1,2,3,4,5,6];
+#zhognxu_list = [1,2,3,0,4,5,6];
+zhongxu_list = [2,1,3,0,5,4,6];
+tree = constuct_tree(xianxu_list,zhongxu_list);
 tree.tree_travel();
+print("中序:");
+tree.zhognxu_travel();
+
+
 #tree.exchange_tree();
 #print("after change");
 #tree.tree_travel();
