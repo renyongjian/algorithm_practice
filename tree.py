@@ -97,10 +97,68 @@ class Tree():
             #更新当前要访问的节点
             if len(q)>0:
                 cur_visit_node = q[0];
+    
+    def xianxu_add(self,node,height):
+        #如果已经是最下层了，就不要加了
+        if height == 0:
+            return;
+        
+        #左子树没有满，并且左孩子是空的时候添加
+        if self.left == None :
+            self.left = node;
+            self.left_len += 1;
+            print("left add node = %d,cnt=%d" %(node.data,1<<height));
+            return ;
+        
+        #左子树满了，才开始添加又子树
+        if self.left_len >= (1<<height -1) and self.right == None:
+            self.right = node;
+            self.right_len += 1;
+            print("right add node = %d,cnt=%d" %(node.data,1<<height));
+            return ;
+            
+        #左子树还没有满，添加到左子树
+        if self.left_len < (1<<height-1):
+            self.left.xianxu_add(node,height-1);
+            self.left_len += 1;
+        #左子树满了，添加到右子树
+        else :
+            self.right.xianxu_add(node,height-1);
+            self.right_len += 1;
+
+    def zhongxu_add(self,node,height):
+        #如果已经是最下层了，就不要加了
+        if height == 0:
+            return;
+        
+        #左子树没有满，并且左孩子是空的时候添加
+        if self.left == None :
+            self.left = node;
+            self.left_len += 1;
+            print("left add node = %d,cnt=%d" %(node.data,1<<height));
+            return ;
+        
+        #左子树满了，才开始添加又子树
+        if self.left_len >= (1<<height -1) and self.right == None:
+            self.right = node;
+            self.right_len += 1;
+            print("right add node = %d,cnt=%d" %(node.data,1<<height));
+            return ;
+            
+        #左子树还没有满，添加到左子树
+        if self.left_len < (1<<height-1):
+            self.left.xianxu_add(node,height-1);
+            self.left_len += 1;
+        #左子树满了，添加到右子树
+        else :
+            self.right.xianxu_add(node,height-1);
+            self.right_len += 1;
+    
+    
     def tree_travel(self):
         #先序遍历
-        if self.pnext != None:
-            print(self.pnext.data);
+
+        print(self.data);
         if self.left is not None:
             self.left.tree_travel();
         #中序遍历
@@ -151,14 +209,14 @@ class Tree():
         print(self.data);
         if self.right != None:
             self.right.travel_lazhi();
-        
-arr_list = [1,2,3,4,5,6];
+     
+arr_list = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
 tree = Tree(0);
 for member in arr_list:
     node = Tree(member);
-    tree.add_node(node);
+    tree.xianxu_add(node,4);
 
-#tree.tree_travel();
+tree.tree_travel();
 #tree.exchange_tree();
 #print("after change");
 #tree.tree_travel();
@@ -166,5 +224,5 @@ for member in arr_list:
 #tree.tree_travel();
 #tree.cengxu_add_node(node);
 #tree.tree_travel_cengxu();
-tree.la_zhi();
-tree.travel_lazhi();
+#tree.la_zhi();
+#tree.travel_lazhi();
