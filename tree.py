@@ -8,6 +8,7 @@ class Tree():
         self.pnext = None;
         self.left_len = 0; #左子树的长度
         self.right_len = 0;#又子树的长度
+        self.hash_value = '';
     
     def add_node(self,node):
         while True:
@@ -224,7 +225,26 @@ class Tree():
         self.right.create_tree(xianxu_list,right_index,zhongxu_right_list,len(zhongxu_right_list));
         pass
         
-
+    def find_repeat_tree(self):
+        if self.left != None:
+            self.left.find_repeat_tree();
+        if self.right != None:
+            self.right.find_repeat_tree();
+        
+        left_data = 'left=';
+        right_data = 'right=';
+        if self.left != None:
+            left_data += str(self.left.hash_value);
+        
+        if self.right != None:
+            right_data += str(self.right.hash_value);
+        
+        self.hash_value = hash(left_data+right_data+self.data);
+        
+        
+        return ;
+        
+        
 def constuct_tree(xianxu_list,zhongxu_list):
     if len(xianxu_list) == 0 or len(zhongxu_list) == 0:
         return None;
@@ -234,22 +254,22 @@ def constuct_tree(xianxu_list,zhongxu_list):
     tree.create_tree(xianxu_list,0,zhongxu_list,list_len);
     return tree;
     
-arr_list = [1,2,3,4,5,6];
+arr_list = [1,2,3,4,5,6,4,5,6,7];
 tree = Tree(0);
 for member in arr_list:
     node = Tree(member);
-    #tree.xianxu_add(node,2);
+    tree.xianxu_add(node,3);
     
 
 
 
-xianxu_list = [0,1,2,3,4,5,6];
+#xianxu_list = [0,1,2,3,4,5,6];
 #zhognxu_list = [1,2,3,0,4,5,6];
-zhongxu_list = [2,1,3,0,5,4,6];
-tree = constuct_tree(xianxu_list,zhongxu_list);
+#zhongxu_list = [2,1,3,0,5,4,6];
+#tree = constuct_tree(xianxu_list,zhongxu_list);
 tree.tree_travel();
-print("中序:");
-tree.zhognxu_travel();
+#print("中序:");
+#tree.zhognxu_travel();
 
 
 #tree.exchange_tree();
