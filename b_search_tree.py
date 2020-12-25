@@ -19,6 +19,9 @@ class Tree():
         
         return ;
     
+    def select_nth(self,k):
+        pass
+        
     def cengxu_add(self,arr_list):
         self.data = arr_list[0];
         q = [];
