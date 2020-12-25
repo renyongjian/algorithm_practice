@@ -93,4 +93,6 @@ tree_list = Tree(0);
 #tree_list.cengxu_add(arr_list);
 tree_list.xianxu_add(arr_list);
 tree_list.xianxu_travel();
+print("zhongxu");
+tree_list.zhongxu_travel(1);
 print(result);
