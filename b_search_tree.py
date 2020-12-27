@@ -88,11 +88,36 @@ class Tree():
         if self.data != None:
             self.data += sum_result;
             sum_result = self.data;
-
+    
         
         if self.left != None:
             self.left.b_search_sum_tree();
+    
+    def is_valid_b_search_tree_node(self,max_node,min_node):
+        if self.data == None:
+            return True;
+        
+        if max_node != None and max_node.data <= self.data:
+            return False;
+        if min_node != None and min_node.data >= self.data:
+            return False;
+        
+        is_left_node_valid = True;
+        is_right_node_valid = True;
+        if self.left != None:
+            is_left_node_valid = self.left.is_valid_b_search_tree_node(self,min_node);
+        
+        if self.right != None:
+            is_right_node_valid = self.right.is_valid_b_search_tree_node(max_node,self);
 
+        return  is_right_node_valid and is_left_node_valid
+        
+    def is_valid_b_search_tree(self):
+        return self.is_valid_b_search_tree_node(None,None);
+    
+        
+        
+        
 
 result = -1;
 index = 0;
@@ -105,9 +130,10 @@ tree_list.cengxu_add(arr_list);
 #tree_list.xianxu_add(arr_list);
 #tree_list.xianxu_travel();
 #print("zhongxu");
-tree_list.zhongxu_travel(1);
+#tree_list.zhongxu_travel(1);
 #print(result);
-print('累加树');
-tree_list.b_search_sum_tree();
-print('再次中序');
-tree_list.zhongxu_travel(1);
+#print('累加树');
+#tree_list.b_search_sum_tree();
+#print('再次中序');
+#tree_list.zhongxu_travel(1);
+print(tree_list.is_valid_b_search_tree());
