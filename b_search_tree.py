@@ -80,19 +80,34 @@ class Tree():
                 if len(q) == 0:
                     break;
                     
+    def b_search_sum_tree(self):
+        global sum_result;
+        if self.right != None:
+            self.right.b_search_sum_tree();
+        
+        if self.data != None:
+            self.data += sum_result;
+            sum_result = self.data;
 
-
+        
+        if self.left != None:
+            self.left.b_search_sum_tree();
 
 
 result = -1;
 index = 0;
 arr_list = [5,3,6,2,4,None,None,1];
 add_index = 0;
+sum_result = 0;
 
 tree_list = Tree(0);
-#tree_list.cengxu_add(arr_list);
-tree_list.xianxu_add(arr_list);
-tree_list.xianxu_travel();
-print("zhongxu");
+tree_list.cengxu_add(arr_list);
+#tree_list.xianxu_add(arr_list);
+#tree_list.xianxu_travel();
+#print("zhongxu");
 tree_list.zhongxu_travel(1);
-print(result);
+#print(result);
+print('累加树');
+tree_list.b_search_sum_tree();
+print('再次中序');
+tree_list.zhongxu_travel(1);
